@@ -6,7 +6,6 @@ const TheirMessage = ({ lastMessage, message }) => {
 
   return (
     <div className="message-row">
-      {" "}
       {isFirstMessageByUser && (
         <div
           className="message-avatar"
