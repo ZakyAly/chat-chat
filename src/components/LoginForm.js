@@ -8,8 +8,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
-    e.prevendDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     const authObject = {
       "Project-ID": projectID,
@@ -17,18 +17,20 @@ const LoginForm = () => {
       "User-Secret": password,
     };
 
-    axios
-      .get("https://api.chatengine.io/chats", {
+    try {
+      await axios.get("https://api.chatengine.io/chats", {
         headers: authObject,
-      })
-      .then(
-        localStorage.setItem("username", username),
-        localStorage.setItem("password", password),
-        window.location.reload()
-      )
-      .catch((error) => {
-        setError("check Username or Password");
       });
+
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+
+      window.location.reload();
+
+      setError("");
+    } catch (err) {
+      setError("Ooops, not correct!");
+    }
   };
 
   return (
@@ -58,7 +60,7 @@ const LoginForm = () => {
             </button>
           </div>
         </form>
-        <h1>{error}</h1>
+        <h1 className="error">{error}</h1>
       </div>
     </div>
   );
